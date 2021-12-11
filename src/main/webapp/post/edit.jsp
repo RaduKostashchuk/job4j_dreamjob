@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.Store" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,7 +24,7 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новая вакансия.
+                Новая вакансия
             </div>
             <div class="card-body">
                 <form>
