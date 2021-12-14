@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.model.Candidate" %>
-<%@ page import="java.util.Collection" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
@@ -35,6 +33,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Фото</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,6 +44,20 @@
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <img src="<c:url value='/download?name=${candidate.id}.jpg'/>" width="100px" height="100px" alt ="<c:out value='${candidate.name}'/>"/>
+                            </td>
+                            <td>
+                                <form action="<c:url value='/candidate/photoupload.jsp?name=${candidate.name}&id=${candidate.id}'/>"
+                                      method="post" enctype="multipart/form-data">
+                                    <button type="submit" class="btn btn-primary">Добавить фото</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="<c:url value='/delete?id=${candidate.id}'/>" method="post" enctype="multipart/form-data">
+                                    <button type="submit" class="btn btn-primary">Удалить кандидата</button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
