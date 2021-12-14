@@ -11,18 +11,29 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class UploadServlet extends HttpServlet {
+    private File imageFolder;
+
+    @Override
+    public void init() {
+        Properties properties = new Properties();
+        try (FileInputStream input = new FileInputStream("c:\\projects\\job4j_dreamjob\\data\\dreamjob.properties")) {
+            properties.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.imageFolder = new File(properties.getProperty("dreamjob.imagefolder"));
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> images = new ArrayList<>();
-        for (File file : new File("c:\\images\\").listFiles()) {
+        for (File file : imageFolder.listFiles()) {
             images.add(file.getName());
         }
 
@@ -40,13 +51,12 @@ public class UploadServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("c:\\images\\");
-            if (!folder.exists()) {
-                folder.mkdir();
+            if (!imageFolder.exists()) {
+                imageFolder.mkdir();
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    File file = new File(folder + File.separator + req.getParameter("id") + ".jpg");
+                    File file = new File(imageFolder + File.separator + req.getParameter("id") + ".jpg");
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         out.write(item.getInputStream().readAllBytes());
                     }
