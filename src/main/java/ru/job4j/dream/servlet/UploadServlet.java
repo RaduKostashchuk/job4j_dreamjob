@@ -14,20 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class UploadServlet extends HttpServlet {
     private File imageFolder;
 
     @Override
     public void init() {
-        Properties properties = new Properties();
-        try (FileInputStream input = new FileInputStream("c:\\projects\\job4j_dreamjob\\data\\dreamjob.properties")) {
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.imageFolder = new File(properties.getProperty("dreamjob.imagefolder"));
+        Config config = new Config();
+        this.imageFolder = new File(config.get("dreamjob.imagefolder"));
     }
 
     @Override

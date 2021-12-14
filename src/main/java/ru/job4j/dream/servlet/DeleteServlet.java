@@ -5,21 +5,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 public class DeleteServlet extends HttpServlet {
     private File imageFolder;
 
     @Override
     public void init() {
-        Properties properties = new Properties();
-        try (FileInputStream input = new FileInputStream("c:\\projects\\job4j_dreamjob\\data\\dreamjob.properties")) {
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.imageFolder = new File(properties.getProperty("dreamjob.imagefolder"));
+       Config config = new Config();
+        this.imageFolder = new File(config.get("dreamjob.imagefolder"));
     }
 
     @Override
