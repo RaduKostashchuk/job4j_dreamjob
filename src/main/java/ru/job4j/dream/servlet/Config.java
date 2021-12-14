@@ -1,17 +1,17 @@
 package ru.job4j.dream.servlet;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
     private final Properties properties = new Properties();
 
     public Config() {
-        try (FileInputStream input = new FileInputStream("c:\\projects\\job4j_dreamjob\\data\\dreamjob.properties")) {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        try (InputStream input = classLoader.getResourceAsStream("dreamjob.properties")) {
             properties.load(input);
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
