@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,6 +29,11 @@
             </div>
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                    <c:if test="${not empty error}">
+                        <div class="alert alert-warning" role="alert">
+                            <c:out value="${error}"/>
+                        </div>
+                    </c:if>
                     <div class="form-group">
                         <label>Почта</label>
                         <input type="text" class="form-control" name="email">
@@ -36,12 +42,7 @@
                         <label>Пароль</label>
                         <input type="text" class="form-control" name="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Войти</button
-                    <c:if test="${not empty error}">
-                        <div style="color:red; font-weight: bold; margin: 30px 0;">
-                                <c:out value="${error}"/>
-                        </div>
-                    </c:if>
+                    <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
             </div>
         </div>
