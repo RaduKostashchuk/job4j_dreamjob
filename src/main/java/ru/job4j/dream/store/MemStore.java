@@ -65,6 +65,10 @@ public class MemStore implements Store {
         return candidates.get(id);
     }
 
+    public void deletePost(int id) {
+        posts.remove(id);
+    }
+
     public void deleteCandidate(int id) {
         candidates.remove(id);
     }
