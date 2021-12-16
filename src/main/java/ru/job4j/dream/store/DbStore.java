@@ -1,6 +1,8 @@
 package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.servlet.User;
@@ -18,6 +20,7 @@ import java.util.Properties;
 
 public class DbStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
+    private static final Logger LOG = LoggerFactory.getLogger(DbStore.class.getName());
 
     private DbStore() {
         Properties cfg = new Properties();
@@ -63,8 +66,8 @@ public class DbStore implements Store {
                     posts.add(new Post(it.getInt("id"), it.getString("name")));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
         }
         return posts;
     }
@@ -79,7 +82,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
         return candidates;
     }
@@ -112,8 +115,8 @@ public class DbStore implements Store {
                     post.setId(id.getInt(1));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
         }
         return post;
     }
@@ -124,7 +127,7 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
     }
 
@@ -140,7 +143,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
         return candidate;
     }
@@ -152,7 +155,7 @@ public class DbStore implements Store {
             ps.setInt(2, post.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
     }
 
@@ -163,7 +166,7 @@ public class DbStore implements Store {
             ps.setInt(2, candidate.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
     }
 
@@ -177,8 +180,8 @@ public class DbStore implements Store {
                     return new Post(it.getInt("id"), it.getString("name"));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
         }
         return null;
     }
@@ -193,8 +196,8 @@ public class DbStore implements Store {
                     return new Candidate(it.getInt("id"), it.getString("name"));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
         }
         return null;
     }
@@ -205,7 +208,7 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
     }
 
@@ -218,7 +221,7 @@ public class DbStore implements Store {
                 ps.setString(3, user.getPassword());
                 ps.executeUpdate();
         } catch (SQLException e) {
-                e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
     }
 
@@ -237,7 +240,7 @@ public class DbStore implements Store {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.toString(), e);
         }
         return null;
     }
