@@ -55,7 +55,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="<c:url value='/delete?id=${candidate.id}'/>" method="post" enctype="multipart/form-data">
+                                <form action="<c:url value='/delete.do?id=${candidate.id}'/>" method="post" enctype="multipart/form-data">
                                     <button type="submit" class="btn btn-primary">Удалить кандидата</button>
                                 </form>
                             </td>

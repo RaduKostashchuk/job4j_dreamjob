@@ -14,7 +14,7 @@
 
 <div class="container">
     <h2>Загрузить фото для кандидата <c:out value="${param.name}"/></h2>
-    <form action="<c:url value='/upload?id=${param.id}'/>" method="post" enctype="multipart/form-data">
+    <form action="<c:url value='/upload.do?id=${param.id}'/>" method="post" enctype="multipart/form-data">
         <div class="checkbox">
             <input type="file" name="file">
         </div>
