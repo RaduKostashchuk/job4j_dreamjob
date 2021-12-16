@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.servlet.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -206,5 +207,25 @@ public class DbStore implements Store {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public void deleteUser(User user) {
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return null;
     }
 }
