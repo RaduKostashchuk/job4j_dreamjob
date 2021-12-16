@@ -25,9 +25,5 @@ public interface Store {
 
     void addUser(User user);
 
-    void deleteUser(User user);
-
-    void updateUser(User user);
-
     User findByEmail(String email);
 }

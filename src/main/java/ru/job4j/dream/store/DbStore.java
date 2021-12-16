@@ -211,21 +211,34 @@ public class DbStore implements Store {
 
     @Override
     public void addUser(User user) {
-
-    }
-
-    @Override
-    public void deleteUser(User user) {
-
-    }
-
-    @Override
-    public void updateUser(User user) {
-
+        try (Connection cn = pool.getConnection();
+            PreparedStatement ps = cn.prepareStatement("insert into users(name, email, password) values ((?), (?), (?))")) {
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getPassword());
+                ps.executeUpdate();
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
     }
 
     @Override
     public User findByEmail(String email) {
+        try (Connection cn = pool.getConnection();
+            PreparedStatement ps = cn.prepareStatement("select name, password from users where email = (?)")) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setName(rs.getString("name"));
+                    user.setPassword(rs.getString("password"));
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
