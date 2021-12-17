@@ -1,6 +1,5 @@
 package ru.job4j.dream.store;
 
-import org.hamcrest.core.IsNull;
 import org.junit.Test;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
