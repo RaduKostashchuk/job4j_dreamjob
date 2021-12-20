@@ -10,22 +10,33 @@
     <script>
         function sendGreeting() {
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: 'http://localhost:8080/dreamjob/greet',
-                data: 'name=' + $('#email').val(),
-                dataType: 'text'
-            }).done(function(data) {
-                $('#start').after(
-                    '<p class="h1">'
-                    + data
-                    + '</p>'
-                );
-            }).fail(function(err){
-                alert(err);
+                data: JSON.stringify({
+                    name: $('#email').val()
+                }),
+                dataType: 'json'
+            }).done(function (data) {
+                $('#emailList li:last').append(`<li>${data.name}</li>`)
+            }).fail(function (err) {
+                console.log(err);
             });
         }
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/dreamjob/greet',
+                dataType: 'json'
+            }).done(function (data) {
+                for (var email of data) {
+                    $('#emailList li:last').append(`<li>${email.name}</li>`)
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
     </script>
-    <title>My first bootstrap page</title>
+    <title>My first ajax json page</title>
 </head>
 <body>
 <div class="container">
@@ -35,8 +46,13 @@
             <label for="email" style="font-weight: bold">Email address</label>
             <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
         </div>
-        <button type="button" class="btn btn-primary" onclick="sendGreeting()">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="sendGreeting()">Отправить</button>
     </form>
+    <br>
+    Почты:
+    <ul id="emailList">
+        <li></li>
+    </ul>
 </div>
 </body>
 </html>
