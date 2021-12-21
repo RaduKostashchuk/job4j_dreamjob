@@ -25,7 +25,23 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Сегодняшние вакансии.
+                <table class="table table-striped" id="tablePosts">
+                    <tbody>
+                    <p class="h6">Сегодняшние вакансии</p>
+                <c:set var="index" scope="session" value="1" />
+                <c:forEach items="${lastPosts}" var="post">
+                    <tr>
+                        <td>
+                            <c:out value="${index}"/>
+                        </td>
+                        <td>
+                            <c:out value="${post.name}"/>
+                        </td>
+                        <c:set var="index" scope="session" value="${index + 1}" />
+                    </tr>
+                </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <div class="card-body">
             </div>
@@ -34,7 +50,23 @@
     <div class="row pt-3">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Сегодняшние кандидаты.
+                <table class="table table-striped" id="tableCandidates">
+                    <tbody>
+                    <p class="h6">Сегодняшние кандидаты</p>
+                    <c:set var="index" scope="session" value="1" />
+                    <c:forEach items="${lastCandidates}" var="candidate">
+                        <tr>
+                            <td>
+                                <c:out value="${index}"/>
+                            </td>
+                            <td>
+                                <c:out value="${candidate.name}"/>
+                            </td>
+                            <c:set var="index" scope="session" value="${index + 1}" />
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <div class="card-body">
             </div>

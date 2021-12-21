@@ -149,7 +149,7 @@
     <profile>
       <id>test</id>
       <properties>
-        <db.url>jdbc:hsqldb:file:db/data/testdb;hsqldb.lock_file=false</db.url>
+        <db.url>jdbc:hsqldb:file:db/data/db;shutdown=true</db.url>
         <db.username>sa</db.username>
         <db.password></db.password>
         <db.driver>org.hsqldb.jdbc.JDBCDriver</db.driver>

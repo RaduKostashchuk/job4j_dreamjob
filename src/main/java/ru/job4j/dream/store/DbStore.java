@@ -4,15 +4,13 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.servlet.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -78,7 +76,11 @@ public class DbStore implements Store {
             PreparedStatement ps = cn.prepareStatement("SELECT * FROM CANDIDATE")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    candidates.add(new Candidate(rs.getInt("id"), rs.getString("name")));
+                    Candidate candidate = new Candidate();
+                    candidate.setId(rs.getInt("id"));
+                    candidate.setName(rs.getString("name"));
+                    candidate.setCityId(rs.getInt("city_id"));
+                    candidates.add(candidate);
                 }
             }
         } catch (Exception e) {
@@ -105,10 +107,11 @@ public class DbStore implements Store {
 
     private Post create(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO POST(NAME) VALUES (?)",
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO POST(NAME, CREATED) VALUES ((?), (?))",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
+            ps.setTimestamp(2, Timestamp.valueOf(post.getCreated()));
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -133,9 +136,11 @@ public class DbStore implements Store {
 
     private Candidate create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-            PreparedStatement ps = cn.prepareStatement("INSERT INTO CANDIDATE (NAME) VALUES (?)",
+            PreparedStatement ps = cn.prepareStatement("INSERT INTO CANDIDATE (NAME, CITY_ID, CREATED) VALUES ((?), (?), (?))",
                 PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getCityId());
+            ps.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             ps.execute();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -161,9 +166,10 @@ public class DbStore implements Store {
 
     private void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE CANDIDATE SET NAME = (?) WHERE ID = (?)")) {
+             PreparedStatement ps = cn.prepareStatement("UPDATE CANDIDATE SET NAME = (?), CITY_ID = (?) WHERE ID = (?)")) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setInt(2, candidate.getCityId());
+            ps.setInt(3, candidate.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.toString(), e);
@@ -193,7 +199,11 @@ public class DbStore implements Store {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Candidate(it.getInt("id"), it.getString("name"));
+                    Candidate candidate = new Candidate();
+                    candidate.setId(it.getInt("id"));
+                    candidate.setName(it.getString("name"));
+                    candidate.setCityId(it.getInt("city_id"));
+                    return candidate;
                 }
             }
         } catch (SQLException e) {
@@ -243,5 +253,61 @@ public class DbStore implements Store {
             LOG.error(e.toString(), e);
         }
         return null;
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+            PreparedStatement ps = cn.prepareStatement("SELECT * FROM CITY")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    cities.add(new City(rs.getInt("id"), rs.getString("name")));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
+        }
+        return cities;
+    }
+
+    @Override
+    public Collection<Post> findLastPosts() {
+        List<Post> posts = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+            PreparedStatement ps =
+                    cn.prepareStatement("SELECT * FROM POST WHERE CREATED >= (CURRENT_TIMESTAMP - INTERVAL '1 day')")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setName(rs.getString("name"));
+                    posts.add(post);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
+        }
+        return posts;
+    }
+
+    @Override
+    public Collection<Candidate> findLastCandidates() {
+        List<Candidate> candidates = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =
+                     cn.prepareStatement("SELECT * FROM CANDIDATE WHERE CREATED >= (CURRENT_TIMESTAMP - INTERVAL '1 day')")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Candidate candidate = new Candidate();
+                    candidate.setId(rs.getInt("id"));
+                    candidate.setName(rs.getString("name"));
+                    candidates.add(candidate);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.toString(), e);
+        }
+        return candidates;
     }
 }

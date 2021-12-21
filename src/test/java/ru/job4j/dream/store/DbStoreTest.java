@@ -3,9 +3,7 @@ package ru.job4j.dream.store;
 import org.junit.Test;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
-
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -37,7 +35,10 @@ public class DbStoreTest {
     @Test
     public void whenCreateCandidate() {
         Store store = DbStore.instOf();
-        Candidate candidate = new Candidate(0, "Junior");
+        Candidate candidate = new Candidate();
+        candidate.setId(0);
+        candidate.setName("PHP Junior");
+        candidate.setCityId(1);
         store.save(candidate);
         Candidate candidateFromDb = store.findCandidateById(candidate.getId());
         assertThat(candidateFromDb.getName(), is(candidate.getName()));
@@ -47,8 +48,14 @@ public class DbStoreTest {
     @Test
     public void whenFindAllCandidates() {
         Store store = DbStore.instOf();
-        Candidate can1 = new Candidate(0, "Junior");
-        Candidate can2 = new Candidate(0, "Middle");
+        Candidate can1 = new Candidate();
+        can1.setId(0);
+        can1.setName("C# Middle");
+        can1.setCityId(2);
+        Candidate can2 = new Candidate();
+        can2.setId(0);
+        can2.setName("Fortran Senior");
+        can2.setCityId(3);
         List<Candidate> expected = List.of(can1, can2);
         store.save(can1);
         store.save(can2);

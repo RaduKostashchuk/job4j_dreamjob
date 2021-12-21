@@ -2,12 +2,15 @@ package ru.job4j.dream.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Post {
     private int id;
     private String name;
     private String description;
-    private LocalDateTime created;
+    private final LocalDateTime created = LocalDateTime.now().truncatedTo(TimeUnit.MINUTES.toChronoUnit());
+
+    public Post() { }
 
     public Post(int id, String name) {
         this.id = id;
@@ -18,7 +21,6 @@ public class Post {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
     }
 
     public int getId() {
@@ -47,10 +49,6 @@ public class Post {
 
     public LocalDateTime getCreated() {
         return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
     }
 
     @Override

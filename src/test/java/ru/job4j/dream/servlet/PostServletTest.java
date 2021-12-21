@@ -3,12 +3,9 @@ package ru.job4j.dream.servlet;
 import org.junit.Test;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.store.DbStore;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;

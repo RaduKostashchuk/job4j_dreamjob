@@ -28,7 +28,7 @@
                 url: 'http://localhost:8080/dreamjob/greet',
                 dataType: 'json'
             }).done(function (data) {
-                for (var email of data) {
+                for (let email of data) {
                     $('#emailList li:last').append(`<li>${email.name}</li>`)
                 }
             }).fail(function (err) {

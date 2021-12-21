@@ -3,7 +3,6 @@ package ru.job4j.dream.servlet;
 import org.junit.Test;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.store.DbStore;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,6 +21,7 @@ public class CandidateServletTest {
         HttpServletResponse resp = mock(HttpServletResponse.class);
         when(req.getParameter("id")).thenReturn("0");
         when(req.getParameter("name")).thenReturn("Java Junior Candidate");
+        when(req.getParameter("cityId")).thenReturn("1");
         new CandidateServlet().doPost(req, resp);
         Candidate candidate = DbStore.instOf().findAllCandidates().stream().toList().get(0);
         assertThat(candidate.getName(), is("Java Junior Candidate"));

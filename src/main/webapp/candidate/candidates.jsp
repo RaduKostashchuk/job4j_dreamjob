@@ -17,7 +17,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <title>Работа мечты</title>
 </head>
 <body>
@@ -32,8 +31,10 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col">ФИО</th>
                         <th scope="col">Фото</th>
+                        <th scope="col">Город</th>
+                        <th scope="col">Управление</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,17 +47,22 @@
                                 <c:out value="${candidate.name}"/>
                             </td>
                             <td>
-                                <img src="<c:url value='/download?name=${candidate.id}.jpg'/>" width="100px" height="100px" alt ="<c:out value='${candidate.name}'/>"/>
+                                <img src="<c:url value='/download?name=${candidate.id}.jpg'/>" width="90px" height="120px" alt ="<c:out value='${candidate.name}'/>"/>
+                            </td>
+                            <td id="<c:out value='${candidate.cityId}'/>">
+                                <c:forEach items="${cities}" var="city">
+                                    <c:if test='${candidate.cityId == city.id}'>
+                                        <c:out value='${city.name}'/>
+                                    </c:if>
+                                </c:forEach>
                             </td>
                             <td>
                                 <form action="<c:url value='/candidate/photoupload.jsp?name=${candidate.name}&id=${candidate.id}'/>"
                                       method="post" enctype="multipart/form-data">
-                                    <button type="submit" class="btn btn-primary">Добавить фото</button>
+                                    <button type="submit" class="btn btn-primary btn-sm mt-2 mx-1">Добавить фото</button>
                                 </form>
-                            </td>
-                            <td>
                                 <form action="<c:url value='/delete.do?id=${candidate.id}'/>" method="post" enctype="multipart/form-data">
-                                    <button type="submit" class="btn btn-primary">Удалить кандидата</button>
+                                    <button type="submit" class="btn btn-secondary btn-sm mt-2 mx-1">Удалить кандидата</button>
                                 </form>
                             </td>
                         </tr>
