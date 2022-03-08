@@ -1,31 +1,51 @@
 # job4j_dreamjob
+## О проекте
 
-It is labour exchange application.
+Это приложение - база вакансий и кандидатов.
 
-There are two kinds of items: candidates and job offers.
+Модератор может добавлять вакансии и кандидатов в приложение.
 
-Moderator can add candidates and job offers to application.
+## Обзор
 
-Login screen.
+Страница входа.
 
 ![ScreenShot](images/login.png)
 
-Index page.
+Главная страница.
 
 ![ScreenShot](images/index.png)
 
-Job offers list.
+Список вакансий.
 
 ![ScreenShot](images/offers.png)
 
-Candidates list.
+Список кандидатов.
 
 ![ScreenShot](images/cans.png)
 
-Add job offer page.
+Страница добавления вакансий.
 
 ![ScreenShot](images/addoffer.png)
 
-Add candidate page.
+Страница добавления кандидатов.
 
 ![ScreenShot](images/addcan.png)
+
+## Настройка и сборка
+
+У приложения есть три файла конфигурации находящихся в папке /src/main/resources/:
+
+1. db.properties - настройки соединения с базой данных.
+
+2. dreamjob.properties - путь к каталогу, куда будут сохраняться фотографии кандидатов.
+
+3. log4j.properties - настройки логгера.
+
+Сборка осуществляется командой: mvn package.
+
+После сборки приложение нужно развернуть в контейнере сервлетов и настроить сервер баз данных.
+
+## Контакты
+
+Email: kostasc@mail.ru
+Telegram: @rkostashchuk
